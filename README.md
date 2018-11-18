@@ -1,7 +1,7 @@
 # Self-Balancing-Mobile-Bot
 A 2-wheeled 1-axle mobile bot
 
-An MPU-6050 was used to sense the orientation of the bot. The libraries written by jrowberg were used to read the data from MPU-6050.
+An Arduino Uno was used to implement the project & an MPU-6050 was used to sense the orientation of the bot. The libraries written by jrowberg were used to read the data from MPU-6050.
 
 In the first phase, a 2-wheeled 1-axle mobile bot was built by using PID control.
 
