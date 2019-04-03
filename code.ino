@@ -205,23 +205,14 @@ void loop() {
             mpu.dmpGetQuaternion(&q, fifoBuffer);
             mpu.dmpGetGravity(&gravity, &q);
             mpu.dmpGetYawPitchRoll(ypr, &q, &gravity);
-            if(millis()<30000){
+        
             Serial.print("ypr\t");
-            Serial.print(ypr[0] * 180/M_PI);
-            Serial.print("\t");
-            Serial.print(ypr[1] * 180/M_PI);
-            Serial.print("\t");
-            Serial.println(ypr[2] * 180/M_PI);
-            }
-            else{
-              Serial.print("ypr\t");
             Serial.print(ypr[0] * 180/M_PI);
             Serial.print("\t");
             Serial.print(ypr[1] * 180/M_PI);
             Serial.print("\t");
             Serial.print(ypr[2] * 180/M_PI);
             Serial.print("\t");
-            }
         #endif
 
 //The gyro values given by MPU-6050 take around 30 seconds of time to become stable.        
@@ -230,16 +221,16 @@ void loop() {
     if((ypr[1]* 180/M_PI)>3.45 && (ypr[1]* 180/M_PI)<4.95) {bt_input();} //implement direction control when the bot is close to upright position (0.55 degrees about central position of 4.2 degrees, i.e, between 3.45 & 4.95 degrees).
     else //else implement PID control to balance the bot.
     {
-      e=e+((4.2)-(ypr[1] * 180/M_PI)); //
+      e=e+((4.2)-(ypr[1] * 180/M_PI)); //error variable to be used in PID control
      if((millis()-tcount>30) || flag == 1)
   {
-    epr=(4.2)-(ypr[1] * 180/M_PI);
+    epr=(4.2)-(ypr[1] * 180/M_PI);//error in present state
     i=(kp*epr)+kd*(epr-eps)+ki*(e);
     Serial.print(i);
-    eps=epr;
+    eps=epr;//error in past state
     tcount=millis();
     flag=0;
-    if(i<127 && i>-127)
+    if((i<127 && i>-127) || i==127 || i==-127)
     {
     analogWrite(5,127+(int)i);
     analogWrite(6,127-(int)i);
